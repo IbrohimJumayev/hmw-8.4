@@ -6,11 +6,11 @@ function TodoList() {
   const todoContext = useContext(TodosContext);
 
   if (!todoContext) {
-    throw new Error("TodosContext should be used Indide of the TodosProvdier");
+    throw new Error("TodosContext should be used Inside of the TodosProvider");
   }
   const { state, dispatch } = todoContext;
 
-  const addTodos = (event:any) => {
+  const addTodos = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch({
       type: "ADDTODO",
@@ -18,10 +18,18 @@ function TodoList() {
     });
   };
 
-  const handleTodo = (event:any) => {
+
+  const handleTodo = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: "SETTODO",
       payload: event.target.value,
+    });
+  };
+
+  const deleteTodo = (id: string) => {
+    dispatch({
+      type: "DELETETODO",
+      payload: id,
     });
   };
 
@@ -46,7 +54,7 @@ function TodoList() {
                       <span className="material-symbols-outlined">check</span>
                     </button>
                   </button>
-                  <button>
+                  <button onClick={() => deleteTodo(todo.id)}>
                     <span className="material-symbols-outlined">delete</span>
                   </button>
                 </div>

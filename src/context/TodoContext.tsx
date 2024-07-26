@@ -4,7 +4,7 @@ export const TodosContext = createContext<ContextValue | null>(null);
 
 interface Todo {
   title: string;
-  id: string ;
+  id: string;
   done: boolean;
 }
 
@@ -15,7 +15,8 @@ interface State {
 
 type Action =
   | { type: "ADDTODO"; payload: Todo }
-  | { type: "SETTODO"; payload: string };
+  | { type: "SETTODO"; payload: string }
+  | { type: "DELETETODO"; payload: string }
 
 interface ContextValue {
   state: State;
@@ -43,14 +44,23 @@ export default function TodosProvider({ children }: { children: JSX.Element }) {
       case "SETTODO":
         return {
           ...state,
-          newTodo:action.payload
+          newTodo: action.payload,
         };
-    default:
-        return state
+    case "DELETETODO": 
+    return {
+      ...state,
+      todos: state.todos.filter((todo) => todo.id !== action.payload),
+    };
+      default:
+        return state;
     }
   }
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  return <TodosContext.Provider value={{state, dispatch}}>{children}</TodosContext.Provider>;
+  return (
+    <TodosContext.Provider value={{ state, dispatch }}>
+      {children}
+    </TodosContext.Provider>
+  );
 }
