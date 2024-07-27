@@ -17,6 +17,7 @@ type Action =
   | { type: "ADDTODO"; payload: Todo }
   | { type: "SETTODO"; payload: string }
   | { type: "DELETETODO"; payload: string }
+  | {type: "DONETODOS"; payload: string}
 
 interface ContextValue {
   state: State;
@@ -46,11 +47,16 @@ export default function TodosProvider({ children }: { children: JSX.Element }) {
           ...state,
           newTodo: action.payload,
         };
-    case "DELETETODO": 
+    case "DELETETODO":
     return {
       ...state,
       todos: state.todos.filter((todo) => todo.id !== action.payload),
     };
+    case "DONETODOS":
+      return {
+        ...state,
+        todos: state.todos.map((todo) => todo.id === action.payload ? {...todo, done: !todo.done} : todo)
+      }
       default:
         return state;
     }

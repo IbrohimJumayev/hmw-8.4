@@ -47,10 +47,10 @@ function TodoList() {
             </h2>
             {state.todos.map((todo) => (
               <li className="list-none flex justify-between" key={todo.id}>
-                <p className="text-xl font-bold">{todo.title}</p>
+                <p className={`text-xl font-bold ${todo.done ? 'line-through text-green-500': ''}`}>{todo.title}</p>
                 <div className="flex items-center gap-5">
                   <button>
-                    <button>
+                    <button onClick={() => dispatch({type:"DONETODOS", payload: todo.id})}>
                       <span className="material-symbols-outlined">check</span>
                     </button>
                   </button>
